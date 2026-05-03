@@ -144,6 +144,90 @@ body::after {
   color: #d4700a;
   border-bottom-color: #d4700a;
 }
+.nav-tab.active-ada {
+  color: #c42858;
+  border-bottom-color: #c42858;
+}
+.nav-tab.hidden-tab { display: none; }
+
+/* ── Group dropdown ── */
+.group-dropdown-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-left: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+.group-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.5);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.group-btn:hover { color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.3); }
+.group-btn .arrow {
+  font-size: 8px;
+  transition: transform 0.2s;
+}
+.group-btn.open .arrow { transform: rotate(180deg); }
+.group-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 220px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.12);
+  z-index: 200;
+}
+.group-menu.open { display: block; }
+.group-item {
+  padding: 0.65rem 1rem;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: color 0.15s, background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.group-item:last-child { border-bottom: none; }
+.group-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+.group-item.active-group { color: #fff; }
+.group-item .g-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.group-item.g-belchatow { --gi-color: #e8a030; }
+.group-item.g-setner    { --gi-color: #9b3ec8; }
+.group-item.g-all       { --gi-color: rgba(255,255,255,0.4); }
+.group-item.g-belchatow.active-group { color: #e8a030; }
+.group-item.g-setner.active-group    { color: #9b3ec8; }
+.group-item.g-all.active-group       { color: rgba(255,255,255,0.7); }
+.group-label {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.2);
+  padding: 0.4rem 1rem 0.2rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
 
 .nav-dot {
   width: 6px;
@@ -172,6 +256,23 @@ body::after {
 .page-bg-wiktor   { background: #060a0c; }
 .page-bg-krystian { background: #08060c; }
 .page-bg-papug    { background: #0c0a06; }
+.page-bg-ada      { background: #0c0608; }
+
+.page-ada {
+  --accent:       #c42858;
+  --accent-dim:   #7a1234;
+  --accent-glow:  rgba(196,40,88,0.13);
+  --accent-border:rgba(196,40,88,0.40);
+  --accent-bg:    rgba(196,40,88,0.08);
+  --hi:           #e8a030;
+  --cream:        #f0d8dc;
+  --cream-dim:    #a08088;
+  --text:         #dcc0c8;
+  --text-dim:     #70505a;
+  --border:       rgba(240,210,218,0.1);
+  --bg2:          #120810;
+  --bg:           #0c0608;
+}
 
 .page-papug {
   --accent:       #d4700a;
@@ -625,32 +726,58 @@ body::after {
 ══════════════════════════════════════ -->
 <nav class="nav-bar">
   <div class="nav-brand">POE · Akta Przekleństwa</div>
-  <div class="nav-tabs">
+  <div class="nav-tabs" id="nav-tabs">
 
-    <button class="nav-tab active-hubert" onclick="switchTab('hubert')" id="tab-hubert">
+    <button class="nav-tab active-hubert" onclick="switchTab('hubert')" id="tab-hubert" data-group="belchatow">
       <span class="nav-dot"></span>
       Zieliński Hubert
       <span class="nav-num">№ 4817</span>
     </button>
 
-    <button class="nav-tab" onclick="switchTab('wiktor')" id="tab-wiktor">
+    <button class="nav-tab" onclick="switchTab('wiktor')" id="tab-wiktor" data-group="belchatow">
       <span class="nav-dot"></span>
       Gajda Wiktor
       <span class="nav-num">№ 4818</span>
     </button>
 
-    <button class="nav-tab" onclick="switchTab('krystian')" id="tab-krystian">
+    <button class="nav-tab" onclick="switchTab('papug')" id="tab-papug" data-group="belchatow">
+      <span class="nav-dot"></span>
+      Papuga "Papug"
+      <span class="nav-num">№ 4820</span>
+    </button>
+
+    <button class="nav-tab" onclick="switchTab('krystian')" id="tab-krystian" data-group="setner">
       <span class="nav-dot"></span>
       Setner Krystian
       <span class="nav-num">№ 4819</span>
     </button>
 
-    <button class="nav-tab" onclick="switchTab('papug')" id="tab-papug">
+    <button class="nav-tab" onclick="switchTab('ada')" id="tab-ada" data-group="setner">
       <span class="nav-dot"></span>
-      Papuga Jakub "Papug"
-      <span class="nav-num">№ 4820</span>
+      Setner Ada
+      <span class="nav-num">№ 4815</span>
     </button>
 
+  </div>
+
+  <!-- Group dropdown -->
+  <div class="group-dropdown-wrap">
+    <button class="group-btn" id="group-btn" onclick="toggleGroupMenu()">
+      <span id="group-btn-label">Wszystkie grupy</span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="group-menu" id="group-menu">
+      <div class="group-label">Filtruj według grupy</div>
+      <div class="group-item g-all active-group" onclick="setGroup('all', this, 'Wszystkie grupy')">
+        <span class="g-dot"></span> Wszystkie
+      </div>
+      <div class="group-item g-belchatow" onclick="setGroup('belchatow', this, 'Grupa Bełchatowska')">
+        <span class="g-dot"></span> Grupa Bełchatowska
+      </div>
+      <div class="group-item g-setner" onclick="setGroup('setner', this, 'Ród Setnerów')">
+        <span class="g-dot"></span> Ród Setnerów
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -1315,21 +1442,229 @@ body::after {
 </div>
 
 <!-- ══════════════════════════════════════
+     PAGE 5 — ADA SETNER
+══════════════════════════════════════ -->
+<div class="profile-page page-ada page-bg-ada" id="page-ada">
+  <div class="vertical-text">Jujutsu Kaisen · Akta Przekleństwa · Ród Setnerów · Głowa Rodu</div>
+  <div class="page">
+
+    <div class="file-stripe reveal d1">
+      <span>AKTA PRZEKLEŃSTWA № 4815 · KLASA 1 · GŁOWA RODU SETNERÓW · OLKUSZ</span>
+      <span class="blink">● AKTYWNA — UWAGA: POZIOM IRYTACJI KRYTYCZNY</span>
+    </div>
+
+    <div class="hero reveal d2">
+      <div>
+        <div class="avatar-box">
+          <div class="scan-line"></div>
+          <span class="avatar-kanji">怒</span>
+          <span class="avatar-initials">AS</span>
+          <span class="avatar-rank-badge">一等 · 宗家頭首</span>
+          <div class="avatar-corner tl"></div>
+          <div class="avatar-corner tr"></div>
+          <div class="avatar-corner bl"></div>
+          <div class="avatar-corner br"></div>
+        </div>
+      </div>
+      <div class="hero-info">
+        <p class="hero-label">セトネル アダ · 宗家頭首 · オルクシュ</p>
+        <p class="hero-name-jp">セ　ト　ネ　ル　ア　ダ</p>
+        <h1 class="hero-name">Ada<br><span>Setner</span></h1>
+        <div class="hero-meta">
+          <div class="meta-cell"><p class="meta-key">Ród / Pozycja</p><p class="meta-val accent">Głowa Rodu Setnerów</p></div>
+          <div class="meta-cell"><p class="meta-key">Ranga</p><p class="meta-val accent">Klasa 1</p></div>
+          <div class="meta-cell"><p class="meta-key">Pochodzenie</p><p class="meta-val">Olkusz · siedziba rodu</p></div>
+          <div class="meta-cell"><p class="meta-key">Relacje</p><p class="meta-val">Matka Krystiana Setnera</p></div>
+          <div class="meta-cell"><p class="meta-key">Specjalizacja</p><p class="meta-val">Wiązanie rodowe · autorytet</p></div>
+          <div class="meta-cell"><p class="meta-key">Typ osobowości</p><p class="meta-val">Wybuchowa · nieugięta</p></div>
+        </div>
+        <p class="hero-quote">„NIE PYTAM PO RAZ DRUGI. Nie dlatego że jestem niecierpliwa — dlatego że drugi raz jest dla ludzi, którzy pierwszego razu nie słuchali."</p>
+      </div>
+    </div>
+
+    <!-- ANGER METER -->
+    <div class="reveal d2" style="margin-bottom:2.5rem;">
+      <div style="border:1px solid var(--accent-border);background:var(--bg2);padding:0.85rem 1.25rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.65rem;">
+          <span style="font-size:9px;letter-spacing:3px;color:var(--text-dim);text-transform:uppercase;">Poziom irytacji — pomiar bieżący:</span>
+          <span style="font-size:9px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;" id="anger-label">KRYTYCZNY</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,0.06);position:relative;overflow:hidden;border:1px solid var(--accent-border);">
+          <div id="anger-bar" style="height:100%;background:linear-gradient(90deg,#c42858,#ff4080);width:94%;transition:width 1.2s ease;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;">
+          <span style="font-size:8px;color:var(--text-dim);">Spokój</span>
+          <span style="font-size:8px;color:var(--accent);" id="anger-val">94 / 100</span>
+          <span style="font-size:8px;color:var(--text-dim);">Wybuch</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d3">
+      <div class="section-header">
+        <span class="section-num">001 ·</span>
+        <span class="section-title">Statystyki bojowe</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-cell"><p class="stat-name">Energia przeklęta</p><div class="stat-track"><div class="stat-fill" style="width:93%;animation-delay:0.9s"></div></div><p class="stat-number">93 <span>/ 100</span></p></div>
+        <div class="stat-cell"><p class="stat-name">Autorytet rodowy</p><div class="stat-track"><div class="stat-fill hi" style="width:99%;animation-delay:1.0s"></div></div><p class="stat-number">99 <span>/ 100</span></p></div>
+        <div class="stat-cell"><p class="stat-name">Kontrola techniki</p><div class="stat-track"><div class="stat-fill" style="width:91%;animation-delay:1.1s"></div></div><p class="stat-number">91 <span>/ 100</span></p></div>
+        <div class="stat-cell"><p class="stat-name">Siła fizyczna</p><div class="stat-track"><div class="stat-fill" style="width:78%;animation-delay:1.2s"></div></div><p class="stat-number">78 <span>/ 100</span></p></div>
+        <div class="stat-cell"><p class="stat-name">Szybkość</p><div class="stat-track"><div class="stat-fill" style="width:82%;animation-delay:1.3s"></div></div><p class="stat-number">82 <span>/ 100</span></p></div>
+        <div class="stat-cell"><p class="stat-name">Wytrzymałość</p><div class="stat-track"><div class="stat-fill" style="width:88%;animation-delay:1.4s"></div></div><p class="stat-number">88 <span>/ 100</span></p></div>
+      </div>
+    </div>
+
+    <div class="reveal d4">
+      <div class="section-header">
+        <span class="section-num">002 ·</span>
+        <span class="section-title">Technika Przeklęta</span>
+        <div class="section-line accent"></div>
+      </div>
+
+      <div class="technique">
+        <div class="technique-header">
+          <span class="technique-title">Węzeł Głowy Rodu — Nakaz Setnerowski</span>
+          <span class="technique-kanji">宗家結縛 · セトネル命令</span>
+        </div>
+        <div class="technique-body">
+          Dziedziczna technika rodu Setnerów w jej pełnej, nieskrępowanej formie — dostępna tylko dla <strong>głowy rodu</strong>. Ada może tworzyć węzły przeklętej energii o znacznie większej sile i złożoności niż Krystian, wiążąc jednocześnie <em>do dwunastu punktów</em> z zachowaniem pełnej kontroli nad każdym z nich.<br><br>
+          Dodatkowy wymiar: węzły Ady mają właściwość <strong>Nakazu</strong> — gdy otoczy węzłem żywą osobę, może wydać proste polecenie, które ta osoba kompulsywnie odczuwa potrzebę wypełnienia. Nie jest to kontrola umysłu — ofiara jest w pełni świadoma i może się opierać, ale kosztem rosnącego dyskomfortu. Stosuje tę technikę głównie na <em>własnych krewnych</em>.
+        </div>
+      </div>
+
+      <div class="technique">
+        <div class="technique-header">
+          <span class="technique-title">Technika Rozszerzona: Krzyk Setnerów</span>
+          <span class="technique-kanji">拡張術式 · セトネル絶叫</span>
+        </div>
+        <div class="technique-body">
+          Kanalizacja energii przeklętej przez głos. Ada może <strong>wzmocnić krzyk energią przeklętą</strong>, tworząc falę uderzeniową zdolną do fizycznego odrzucenia przeciwników lub rozbicia węzłów i barier energetycznych innych egzorcystów. Im bardziej jest rozgniewana — <em>a jest rozgniewana prawie zawsze</em> — tym większa moc wyzwolona jednym wybuchem.<br><br>
+          Technika jest trudna do kontrolowania właśnie dlatego, że bazuje na emocjach. W stanie pełnego spokoju byłaby znacznie słabsza. Egzorcyści Towarzystwa z Olkusza uczą się, że <strong>nie należy jej denerwować</strong> — nie dlatego że to nierozsądne, ale dlatego że ściany są drogie w naprawie.
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d5">
+      <div class="section-header">
+        <span class="section-num">003 ·</span>
+        <span class="section-title">Rozwinięcie Domeny</span>
+        <div class="section-line accent"></div>
+      </div>
+      <div class="technique is-domain">
+        <div class="technique-header domain-h">
+          <span class="technique-title">Rezydencja Rodu: Przesłuchanie Familijne</span>
+          <span class="domain-tag">Domena</span>
+          <span class="technique-kanji">領域展開 · 宗家邸「家族尋問」</span>
+        </div>
+        <div class="technique-body">
+          Przestrzeń odwzorowująca <strong>główną salę rezydencji Setnerów w Olkuszu</strong> — ciężkie drewniane meble, portrety przodków patrzące z dezaprobatą, kominek bijący gorącem. Ada siedzi przy końcu długiego stołu. Wszyscy inni siedzą wzdłuż niego, bez możliwości wstania.<br><br>
+          Domena aktywuje pełny zakres techniki Nakazu: <em>każda osoba wewnątrz odczuwa ciężar rodowego autorytetu</em> bezpośrednio na energii przeklętej — kompulsywna potrzeba posłuszeństwa wobec Ady narasta z każdą minutą. Przekleństwa klasy 2 i niżej kapitulują natychmiast.<br><br>
+          Szczyt skuteczności: egzorcyści z silnymi więziami rodzinnymi lub rodowymi są <strong>szczególnie podatni</strong> — domena uderza w instynkt posłuszeństwa zakodowany głębiej niż technika. Krystian jest jedynym, na którego działa słabiej niż na innych — twierdzi, że przez lata <em>„wypracował odporność"</em>. Ada mówi, że to kłamstwo.
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal d5">
+      <div class="section-header">
+        <span class="section-num">004 ·</span>
+        <span class="section-title">Ród Setnerów — Głowa Rodu</span>
+        <div class="section-line accent"></div>
+      </div>
+      <div style="border:1px solid var(--accent-border);background:var(--bg2);padding:1rem 1.25rem;margin-bottom:1rem;font-size:12px;line-height:1.9;color:var(--text);">
+        <p style="font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:0.75rem;">Nota archiwalna — Pozycja w rodzie:</p>
+        Ada Setner jest <strong style="color:var(--cream);">ósmą głową rodu Setnerów</strong>, obejmując tę funkcję po śmierci swojego ojca w wieku dwudziestu dziewięciu lat — jedną z młodszych głów w historii rodu. Rezydencja główna i <em style="color:var(--accent);">archiwum rodowe</em> mieszczą się w <strong style="color:var(--cream);">Olkuszu</strong>, gdzie Setnerowie osiedlili się w XVII wieku, przyciągnięci przez miejscowe złoża srebra, które okazały się skażone energią przeklętą na tyle głęboko, że nikt inny nie chciał tam mieszkać.<br><br>
+        Ada zarządza rodem żelazną ręką i nieustannym komentarzem głosowym do każdej decyzji podjętej przez kogokolwiek innego. Krystian jest jej synem, co tłumaczy zarówno jego obecność na misjach obserwacyjnych dala od Olkusza, jak i jego <strong style="color:var(--cream);">chroniczne unikanie telefonów w niedziele</strong>.
+      </div>
+    </div>
+
+    <div class="reveal d6">
+      <div class="section-header">
+        <span class="section-num">005 ·</span>
+        <span class="section-title">Historia</span>
+        <div class="section-line"></div>
+      </div>
+      <div class="lore-block">
+        <p>Ada Setner urodziła się i wychowała w <strong>Olkuszu</strong>, w rezydencji rodu przy tej samej ulicy, gdzie siódma, szósta i piąta głowa rodu spędziły większość swojego życia narzekając na siebie nawzajem. Tradycja ta jest kontynuowana — Ada jest z niej dumna, choć nie przyzna tego publicznie.</p>
+        <p>Jest matką Krystiana i ma w tej roli złożone uczucia. Z jednej strony jest on najbardziej utalentowanym członkiem rodu od pokoleń. Z drugiej strony <strong>wyjeżdża obserwować nieznajomych egzorcystów zamiast siedzieć w Olkuszu</strong> i uczyć się jak prowadzić archiwum. Na każdą jego misję obserwacyjną dzwoni minimum trzy razy. Krystian odbiera co czwarty telefon. Ada mówi, że to niedopuszczalne. Krystian mówi, że to postęp.</p>
+        <p>Dla Huberta i Wiktora Ada jest postacią <em>zasadniczo mitologiczną</em> — słyszeli o niej od Krystiana wyłącznie w kontekście pytania: <em>„Nie ma jej tu, prawda?"</em> Gdy w końcu doszło do spotkania, Wiktor stwierdził, że rozumie teraz Krystiana znacznie lepiej. Hubert nie powiedział nic, co jest jego standardową odpowiedzią na wszystko, co jest naprawdę poważne.
+        </p>
+      </div>
+    </div>
+
+    <div class="page-footer reveal d7">
+      <span>Polska Organizacja Egzorcystów · Archiwum Rodowe · Olkusz</span>
+      <span>Plik nr. <span class="accent">4815</span> · Głowa Rodu · Klauzula: niejawny</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
      SCRIPT
 ══════════════════════════════════════ -->
 <script>
+/* ── Tab groups ── */
+const GROUPS = {
+  all:       ['hubert','wiktor','papug','krystian','ada'],
+  belchatow: ['hubert','wiktor','papug'],
+  setner:    ['krystian','ada'],
+};
+let currentGroup = 'all';
+
+function applyGroup(group) {
+  currentGroup = group;
+  const visible = GROUPS[group];
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    const name = tab.id.replace('tab-', '');
+    tab.classList.toggle('hidden-tab', !visible.includes(name));
+  });
+  // If the currently shown page is hidden by the filter, switch to first visible
+  const activePage = document.querySelector('.profile-page.visible');
+  if (activePage) {
+    const activeName = activePage.id.replace('page-', '');
+    if (!visible.includes(activeName)) {
+      switchTab(visible[0]);
+    }
+  }
+}
+
+function setGroup(group, el, label) {
+  document.querySelectorAll('.group-item').forEach(i => i.classList.remove('active-group'));
+  el.classList.add('active-group');
+  document.getElementById('group-btn-label').textContent = label;
+  toggleGroupMenu();
+  applyGroup(group);
+}
+
+function toggleGroupMenu() {
+  const menu = document.getElementById('group-menu');
+  const btn  = document.getElementById('group-btn');
+  const open = menu.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.group-dropdown-wrap')) {
+    document.getElementById('group-menu').classList.remove('open');
+    document.getElementById('group-btn').classList.remove('open');
+  }
+});
+
+/* ── Tab switching ── */
 function switchTab(name) {
   document.querySelectorAll('.profile-page').forEach(p => p.classList.remove('visible'));
   document.querySelectorAll('.nav-tab').forEach(t => {
-    t.classList.remove('active-hubert', 'active-wiktor', 'active-krystian', 'active-papug');
+    t.classList.remove('active-hubert','active-wiktor','active-krystian','active-papug','active-ada');
   });
 
   document.getElementById('page-' + name).classList.add('visible');
   const tab = document.getElementById('tab-' + name);
-  tab.classList.add('active-' + name);
+  if (tab) tab.classList.add('active-' + name);
 
-  const reveals = document.querySelectorAll('#page-' + name + ' .reveal');
-  reveals.forEach(el => {
+  document.querySelectorAll('#page-' + name + ' .reveal').forEach(el => {
     el.style.animation = 'none';
     el.offsetHeight;
     el.style.animation = '';
@@ -1338,7 +1673,7 @@ function switchTab(name) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ADHD state cycler for Krystian
+/* ── Krystian ADHD cycler ── */
 const adhdStates = [
   { id: 'state-focus',   control: '95', barW: '95%' },
   { id: 'state-neutral', control: '75', barW: '75%' },
@@ -1349,7 +1684,6 @@ let adhdIndex = 0;
 function cycleADHD() {
   adhdIndex = (adhdIndex + 1) % adhdStates.length;
   const active = adhdStates[adhdIndex];
-
   adhdStates.forEach((s, i) => {
     const el = document.getElementById(s.id);
     if (!el) return;
@@ -1358,14 +1692,13 @@ function cycleADHD() {
     el.style.background = i === adhdIndex ? 'var(--accent-bg)' : 'transparent';
     el.querySelector('p:first-child').style.color = i === adhdIndex ? 'var(--accent)' : 'var(--text-dim)';
   });
-
   const bar = document.getElementById('control-bar');
   const val = document.getElementById('control-val');
   if (bar) { bar.style.transition = 'width 0.6s cubic-bezier(0.16,1,0.3,1)'; bar.style.width = active.barW; }
   if (val) val.innerHTML = active.control + ' <span>/ 100</span>';
 }
 
-// Print queue progress animation for Papug
+/* ── Papug print queue ── */
 let printProgress = 67;
 setInterval(() => {
   const el = document.getElementById('progress-val');
@@ -1373,6 +1706,26 @@ setInterval(() => {
   printProgress = (printProgress + 1) % 101;
   el.textContent = printProgress + '%';
 }, 800);
+
+/* ── Ada anger meter ── */
+let angerDir = 1;
+let angerVal = 94;
+setInterval(() => {
+  angerVal += angerDir * (Math.random() * 2.5);
+  if (angerVal >= 99) { angerVal = 99; angerDir = -1; }
+  if (angerVal <= 70)  { angerVal = 70;  angerDir = 1;  }
+  const v = Math.round(angerVal);
+  const bar = document.getElementById('anger-bar');
+  const lbl = document.getElementById('anger-label');
+  const num = document.getElementById('anger-val');
+  if (bar) bar.style.width = v + '%';
+  if (num) num.textContent = v + ' / 100';
+  if (lbl) {
+    if (v >= 90) lbl.textContent = 'KRYTYCZNY';
+    else if (v >= 75) lbl.textContent = 'WYSOKI';
+    else lbl.textContent = 'PODWYŻSZONY';
+  }
+}, 1200);
 </script>
 </body>
 </html>
